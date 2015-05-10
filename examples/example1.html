@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style>
+    .dis-none {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id='california' class='dis-none'>
+    <h1>California</h1>
+  </div>
+  <div id='oregan' class='dis-none'>
+    <h1>Oregan</h1>
+  </div>
+  <div id='florida' class='dis-none'>
+    <h1>Florida</h1>
+  </div>
+  <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+  <script src="../lib/index.js"></script>
+  <script>
+    var openCalifornia = function (cb) {
+      // check the Star object to see whether it is currently active
+      if (!this.country.topStar) {
+        return false;
+      }
+
+      console.info('opening california');
+      $('#california').fadeIn();
+
+      if (cb) { cb(); }
+
+    };
+
+    var closeCalifornia = function (cb) {
+      console.info('closing california');
+      $('#california').fadeOut('slow', function () {
+        if (!this.country.topStar) {
+          return false;
+        }
+        if (cb) { cb(); } 
+      }.bind(this));
+    };
+
+    var openFlorida = function () {
+      console.info('opening florida');
+      $('#florida').fadeIn();
+    };
+
+    var closeFlorida = function () {
+      console.info('closing florida');
+      $('#florida').fadeOut();
+    };
+
+    var openOregan = function () {
+      console.info('opening oregan');
+      this.getTarget().show();
+    };
+
+    var closeOregan = function () {
+      console.info('closing oregan');
+      this.getTarget().hide();
+    };
+
+    var suddenClose = function () {
+      this.getTarget().hide(); 
+    };
+
+    var usa = new Country();
+    var california = new Star(usa, '#california', openCalifornia, closeCalifornia);
+    var oregan = new Star(usa, '#oregan', openOregan, closeOregan);
+    var florida = new Star(usa, '#florida', openFlorida, closeFlorida);
+
+    california.actions.open();
+    florida.actions.open();
+    oregan.actions.open();
+
+    // TODO This scenario doesnt have the proper kill switch during california.actions.close 
+    // FIXME florida is shown
+    // california.actions.open();
+    // california.actions.close(florida.actions.open);
+    // florida.actions.close();
+
+        
+  </script>
+</body>
+</html>
